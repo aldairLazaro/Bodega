@@ -36,7 +36,7 @@ public class DaoBuscarTrabajador extends Conexion {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                usuario.setId_usuario((rs.getInt("id_usuario")));
+                usuario.setId_usuario((rs.getInt("id")));
                 usuario.setRut(rs.getString("rut"));
                 usuario.setRut(rs.getString("nombre"));
                 usuario.setRut(rs.getString("apellido"));
