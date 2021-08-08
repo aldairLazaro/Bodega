@@ -172,6 +172,7 @@ public class JFLogin extends javax.swing.JFrame {
                     JFMenu menu = new JFMenu();
                     menu.setVisible(true);
                     dispose();
+                    
                 }
                 
             }else{
