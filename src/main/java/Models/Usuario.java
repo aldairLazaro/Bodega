@@ -15,103 +15,88 @@ public class Usuario {
     private String nombre;
     private String apellido;
     private String pass;
-    private TipoUsuario tipo_usuario;
+    private String las_time; 
+    private int tipo_usuario;
+    private String tipo_descripcion;
 
     public Usuario() {
     }
 
-    public Usuario(int id_usuario, String rut, String nombre, String apellido, String pass, TipoUsuario tipo_usuario) {
+    public Usuario(int id_usuario, String rut, String nombre, String apellido, String pass, String las_time, int tipo_usuario, String tipo_descripcion) {
         this.id_usuario = id_usuario;
         this.rut = rut;
         this.nombre = nombre;
         this.apellido = apellido;
         this.pass = pass;
+        this.las_time = las_time;
         this.tipo_usuario = tipo_usuario;
+        this.tipo_descripcion = tipo_descripcion;
     }
 
-    /**
-     * @return the id_usuario
-     */
     public int getId_usuario() {
         return id_usuario;
     }
 
-    /**
-     * @param id_usuario the id_usuario to set
-     */
     public void setId_usuario(int id_usuario) {
         this.id_usuario = id_usuario;
     }
 
-    /**
-     * @return the rut
-     */
     public String getRut() {
         return rut;
     }
 
-    /**
-     * @param rut the rut to set
-     */
     public void setRut(String rut) {
         this.rut = rut;
     }
 
-    /**
-     * @return the nombre
-     */
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * @param nombre the nombre to set
-     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * @return the apellido
-     */
     public String getApellido() {
         return apellido;
     }
 
-    /**
-     * @param apellido the apellido to set
-     */
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
 
-    /**
-     * @return the pass
-     */
     public String getPass() {
         return pass;
     }
 
-    /**
-     * @param pass the pass to set
-     */
     public void setPass(String pass) {
         this.pass = pass;
     }
 
-    /**
-     * @return the tipo_usuario
-     */
-    public TipoUsuario getTipo_usuario() {
+    public String getLas_time() {
+        return las_time;
+    }
+
+    public void setLas_time(String las_time) {
+        this.las_time = las_time;
+    }
+
+    public int getTipo_usuario() {
         return tipo_usuario;
     }
 
-    /**
-     * @param tipo_usuario the tipo_usuario to set
-     */
-    public void setTipo_usuario(TipoUsuario tipo_usuario) {
+    public void setTipo_usuario(int tipo_usuario) {
         this.tipo_usuario = tipo_usuario;
+    }
+
+    public String getTipo_descripcion() {
+        return tipo_descripcion;
+    }
+
+    public void setTipo_descripcion(String tipo_descripcion) {
+        this.tipo_descripcion = tipo_descripcion;
     }
     
     
+   
 }

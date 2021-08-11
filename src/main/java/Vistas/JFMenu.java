@@ -5,19 +5,37 @@
  */
 package Vistas;
 
+import Models.Usuario;
+
 /**
  *
  * @author wilal
  */
 public class JFMenu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form JFMenu
-     */
+    Usuario user;
+    
     public JFMenu() {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
+        
     }
-
+    
+    public JFMenu(Usuario user){
+        initComponents();
+        setLocationRelativeTo(null);
+        setExtendedState(MAXIMIZED_BOTH);
+        this.user=user;
+        
+        if (user.getTipo_usuario() == 1) {
+            
+        }else if(user.getTipo_usuario() == 2){
+            menuRegistrarProductoBase.setVisible(false);
+            MenuRegistrarUsuarios.setVisible(false);
+            menuAdministracionUsuarios.setVisible(false);
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,15 +46,19 @@ public class JFMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        menuAdministracionBodega = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        MenuIngresoProductos = new javax.swing.JMenuItem();
+        MenuSalidaProductos = new javax.swing.JMenuItem();
+        menuProductosBase = new javax.swing.JMenuItem();
+        menuAdministracionUsuarios = new javax.swing.JMenu();
+        MenuRegistrarUsuarios = new javax.swing.JMenuItem();
+        menuRegistrarProductoBase = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("File");
+        menuAdministracionBodega.setText("Administracion de bodega");
 
         jMenuItem1.setText("Inventario");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
@@ -44,17 +66,55 @@ public class JFMenu extends javax.swing.JFrame {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        menuAdministracionBodega.add(jMenuItem1);
 
-        jMenuItem2.setText("Agregar Productos");
-        jMenu1.add(jMenuItem2);
+        MenuIngresoProductos.setText("Ingreso de Productos");
+        MenuIngresoProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuIngresoProductosActionPerformed(evt);
+            }
+        });
+        menuAdministracionBodega.add(MenuIngresoProductos);
 
-        jMenuItem3.setText("Salida de Productos");
-        jMenu1.add(jMenuItem3);
+        MenuSalidaProductos.setText("Salida de Productos");
+        MenuSalidaProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuSalidaProductosActionPerformed(evt);
+            }
+        });
+        menuAdministracionBodega.add(MenuSalidaProductos);
 
-        jMenuBar1.add(jMenu1);
+        menuProductosBase.setText("Productos Base");
+        menuProductosBase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProductosBaseActionPerformed(evt);
+            }
+        });
+        menuAdministracionBodega.add(menuProductosBase);
 
-        jMenu2.setText("Edit");
+        jMenuBar1.add(menuAdministracionBodega);
+
+        menuAdministracionUsuarios.setText("Administracion de Usuarios");
+
+        MenuRegistrarUsuarios.setText("Registrar nuevos usuarios");
+        MenuRegistrarUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuRegistrarUsuariosActionPerformed(evt);
+            }
+        });
+        menuAdministracionUsuarios.add(MenuRegistrarUsuarios);
+
+        menuRegistrarProductoBase.setText("Registrar Nuevos Productos Base");
+        menuRegistrarProductoBase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRegistrarProductoBaseActionPerformed(evt);
+            }
+        });
+        menuAdministracionUsuarios.add(menuRegistrarProductoBase);
+
+        jMenuBar1.add(menuAdministracionUsuarios);
+
+        jMenu2.setText("Exit");
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -74,8 +134,40 @@ public class JFMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+        JFInventario inventario = new JFInventario();
+        inventario.setVisible(true);
+        dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void MenuIngresoProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuIngresoProductosActionPerformed
+        JFIngresoProductos ingresoProductos = new JFIngresoProductos();
+        ingresoProductos.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuIngresoProductosActionPerformed
+
+    private void MenuSalidaProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuSalidaProductosActionPerformed
+        JFSalidaProductos salidaProductos = new JFSalidaProductos();
+        salidaProductos.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuSalidaProductosActionPerformed
+
+    private void menuProductosBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductosBaseActionPerformed
+        JFProductosBase productosBase = new JFProductosBase();
+        productosBase.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_menuProductosBaseActionPerformed
+
+    private void MenuRegistrarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuRegistrarUsuariosActionPerformed
+        JFRegistroUsuario registrarUsuarios = new JFRegistroUsuario();
+        registrarUsuarios.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuRegistrarUsuariosActionPerformed
+
+    private void menuRegistrarProductoBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRegistrarProductoBaseActionPerformed
+        JFRegistrarProductosBase ingresoProductosBase = new JFRegistrarProductosBase();
+        ingresoProductosBase.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_menuRegistrarProductoBaseActionPerformed
 
     /**
      * @param args the command line arguments
@@ -113,11 +205,15 @@ public class JFMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem MenuIngresoProductos;
+    private javax.swing.JMenuItem MenuRegistrarUsuarios;
+    private javax.swing.JMenuItem MenuSalidaProductos;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenu menuAdministracionBodega;
+    private javax.swing.JMenu menuAdministracionUsuarios;
+    private javax.swing.JMenuItem menuProductosBase;
+    private javax.swing.JMenuItem menuRegistrarProductoBase;
     // End of variables declaration//GEN-END:variables
 }

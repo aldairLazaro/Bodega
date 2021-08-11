@@ -19,35 +19,36 @@ import java.sql.SQLException;
  */
 public class DaoBuscarTrabajador extends Conexion {
 
-    public Usuario BuscarUsuario(String rut, String pass) {
+    public Boolean Login(String rut, String pass) {
         Usuario usuario = new Usuario();
 
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection con = getConexion();
 
-        String sql = "SELECT * FROM usuario WHERE rut = ? and password = ?";
+        String sql = "SELECT u.id, u.nombre, u.apellido, u.rut, u.password, u.id_tipo_usuario, t.descripcion "
+                + "FROM usuario AS u INNER JOIN tipo_usuario AS t ON u.id_tipo_usuario=t.id_tipo_usuario WHERE   usuario = ?";
 
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1, rut);
-            ps.setString(2, pass);
+            ps.setString(1, usuario.getRut());
+            ps.setString(2, usuario.getPass());
 
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                usuario.setId_usuario((rs.getInt("id")));
-                usuario.setRut(rs.getString("rut"));
-                usuario.setRut(rs.getString("nombre"));
-                usuario.setRut(rs.getString("apellido"));
-                
-                int idT = Integer.parseInt(rs.getString("id_tipo_usuario"));
-                TipoUsuario tpUsuario =  BuscarTipoUsuario(idT);
-                usuario.setTipo_usuario(tpUsuario);
-                return usuario;
-                
+                if (usuario.getPass().equals(rs.getString(5))) {
+                    usuario.setId_usuario((rs.getInt("id")));
+                    usuario.setRut(rs.getString("rut"));
+                    usuario.setRut(rs.getString("nombre"));
+                    usuario.setRut(rs.getString("apellido"));
+                    usuario.setTipo_usuario((rs.getInt("id_tipo")));
+                    return true;
+                } else {
+                    return false;
+                }
             }
-            return null;
+            return false;
 
         } catch (SQLException e) {
             System.out.println(e);
@@ -60,21 +61,21 @@ public class DaoBuscarTrabajador extends Conexion {
             }
         }
     }
-    
-    public TipoUsuario BuscarTipoUsuario(int id_tipo_usuario){
+
+    public TipoUsuario BuscarTipoUsuario(int id_tipo_usuario) {
         TipoUsuario tpUsuario = new TipoUsuario();
-        
+
         PreparedStatement ps = null;
         ResultSet rs = null;
         Connection con = getConexion();
-        
+
         String sql = "SELECT * FROM tipo_usuario WHERE id_tipo_usuario = ?";
-        
+
         try {
             ps = con.prepareStatement(sql);
             ps.setInt(1, id_tipo_usuario);
             rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 tpUsuario.setId_tipo_usuario(Integer.parseInt(rs.getString("id_tipo_usuario")));
                 tpUsuario.setDescripcion(rs.getString("descripcion"));
@@ -82,7 +83,7 @@ public class DaoBuscarTrabajador extends Conexion {
         } catch (Exception e) {
             System.out.println(e);
         }
-        
+
         return tpUsuario;
     }
 

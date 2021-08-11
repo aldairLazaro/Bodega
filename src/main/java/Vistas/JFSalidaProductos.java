@@ -5,6 +5,17 @@
  */
 package Vistas;
 
+import Conexion.Conexion;
+import Controllers.ControllersProducto;
+import Models.Productos;
+import Models.SalidaProducto;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author wilal
@@ -16,6 +27,78 @@ public class JFSalidaProductos extends javax.swing.JFrame {
      */
     public JFSalidaProductos() {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
+        this.setLocationRelativeTo(null);
+        ListarSalidaProductos();
+    }
+    
+    public void ListarSalidaProductos() {
+        try {
+            DefaultTableModel tablaProductos = new DefaultTableModel();
+            TBSalidaProductos.setModel(tablaProductos);
+
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            Conexion conn = new Conexion();
+            Connection con = conn.getConexion();
+
+            String sql = "SELECT  codigo, descripcion, cantidad, centro_costo, fecha_salida FROM salida";
+
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            ResultSetMetaData meta = rs.getMetaData();
+
+            int cantidad = meta.getColumnCount();
+
+            tablaProductos.addColumn("Codigo");
+            tablaProductos.addColumn("Descripcion");
+            tablaProductos.addColumn("Cantidad");
+            tablaProductos.addColumn("Centro Costo");
+            tablaProductos.addColumn("Fecha Salida");
+            while (rs.next()) {
+                Object[] filas = new Object[cantidad];
+
+                for (int i = 0; i < cantidad; i++) {
+                    filas[i] = rs.getObject(i + 1);
+                }
+                tablaProductos.addRow(filas);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+     public Boolean SalidaProductos(){
+        Boolean exito=false;
+        
+        try {
+            int codigo = Integer.parseInt(txtCodigo.getText());
+            String descripcion = txtDescripcion.getText();
+            int cantidad = Integer.parseInt(txtCantidad.getText());
+            String centro = txtCentro.getText();
+            
+            ControllersProducto ctProductos = new ControllersProducto();
+            SalidaProducto salida = new SalidaProducto();
+            
+            salida.setCodigo(codigo);
+            salida.setDescripcion(descripcion);
+            salida.setCantidad(cantidad);
+            salida.setCento_costo(centro);
+            
+            exito=ctProductos.SalidaProducto(salida);
+        } catch (Exception e) {
+            System.out.println(e);
+            exito=false;
+        }
+        return exito;
+    }
+    
+    public void LimpiarCasillas(){
+        txtCodigo.setText("");
+        txtDescripcion.setText("");
+        txtCantidad.setText("");
+        txtCentro.setText("");
     }
 
     /**
@@ -33,12 +116,10 @@ public class JFSalidaProductos extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextField();
+        txtCantidad = new javax.swing.JTextField();
+        txtCentro = new javax.swing.JTextField();
         btnSalirProducto = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -46,8 +127,10 @@ public class JFSalidaProductos extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        MenuPrincipal = new javax.swing.JMenu();
         Menu = new javax.swing.JMenuItem();
+        MenuInventario = new javax.swing.JMenuItem();
+        MenuIngresoProductos = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -68,11 +151,13 @@ public class JFSalidaProductos extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Centro de Costo");
 
-        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel6.setText("Fecha");
-
         btnSalirProducto.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btnSalirProducto.setText("Salida");
+        btnSalirProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirProductoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -81,28 +166,26 @@ public class JFSalidaProductos extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField2)
-                    .addComponent(jTextField1)
+                    .addComponent(txtCodigo)
+                    .addComponent(txtDescripcion)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3)
                             .addComponent(jLabel2)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE))
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                            .addComponent(txtCentro))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(164, 164, 164))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(171, 171, 171)
-                        .addComponent(btnSalirProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(193, 193, 193)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(143, 143, 143)
+                        .addComponent(btnSalirProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -113,43 +196,36 @@ public class JFSalidaProductos extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21)
                 .addComponent(jLabel4)
                 .addGap(9, 9, 9)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jLabel6)
-                .addGap(18, 18, 18)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(63, 63, 63)
+                .addComponent(txtCentro, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59)
                 .addComponent(btnSalirProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(69, Short.MAX_VALUE))
+                .addContainerGap(172, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 730));
 
         TBSalidaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Codigo Sap", "Descripcion", "Cantidad", "Centro de costo", "Fecha"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -167,39 +243,56 @@ public class JFSalidaProductos extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 854, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField6)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 789, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(24, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(86, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(60, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField6))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 538, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 890, 730));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 840, 660));
 
-        jMenu1.setText("File");
+        MenuPrincipal.setText("Menu");
 
-        Menu.setText("Menu");
+        Menu.setText("Menu Principal");
         Menu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MenuActionPerformed(evt);
             }
         });
-        jMenu1.add(Menu);
+        MenuPrincipal.add(Menu);
 
-        jMenuBar1.add(jMenu1);
+        MenuInventario.setText("Inventario");
+        MenuInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuInventarioActionPerformed(evt);
+            }
+        });
+        MenuPrincipal.add(MenuInventario);
+
+        MenuIngresoProductos.setText("Ingreso de Productos");
+        MenuIngresoProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuIngresoProductosActionPerformed(evt);
+            }
+        });
+        MenuPrincipal.add(MenuIngresoProductos);
+
+        jMenuBar1.add(MenuPrincipal);
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -210,8 +303,34 @@ public class JFSalidaProductos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuActionPerformed
-        // TODO add your handling code here:
+        JFMenu menu = new JFMenu();
+        menu.setVisible(true);
+        dispose();
     }//GEN-LAST:event_MenuActionPerformed
+
+    private void MenuIngresoProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuIngresoProductosActionPerformed
+        JFIngresoProductos ingresoProductos = new JFIngresoProductos();
+        ingresoProductos.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuIngresoProductosActionPerformed
+
+    private void MenuInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuInventarioActionPerformed
+        JFInventario inventario = new JFInventario();
+        inventario.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuInventarioActionPerformed
+
+    private void btnSalirProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirProductoActionPerformed
+        if (SalidaProductos()== true) {
+            JOptionPane.showMessageDialog(null, "Salida Exitosa", "Registro", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Salida Fallida", "Registro", JOptionPane.ERROR_MESSAGE);
+        }
+
+        ListarSalidaProductos();
+
+        LimpiarCasillas();
+    }//GEN-LAST:event_btnSalirProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,6 +369,9 @@ public class JFSalidaProductos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Menu;
+    private javax.swing.JMenuItem MenuIngresoProductos;
+    private javax.swing.JMenuItem MenuInventario;
+    private javax.swing.JMenu MenuPrincipal;
     private javax.swing.JTable TBSalidaProductos;
     private javax.swing.JButton btnSalirProducto;
     private javax.swing.JLabel jLabel1;
@@ -257,19 +379,16 @@ public class JFSalidaProductos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtCentro;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtDescripcion;
     // End of variables declaration//GEN-END:variables
 }

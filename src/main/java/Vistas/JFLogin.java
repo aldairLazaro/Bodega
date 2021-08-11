@@ -1,4 +1,4 @@
-/*
+ /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,7 +6,11 @@
 package Vistas;
 
 import Controllers.ControllersUsuario;
+import Models.Hash;
 import Models.Usuario;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import sun.security.util.Password;
 
@@ -21,6 +25,7 @@ public class JFLogin extends javax.swing.JFrame {
      */
     public JFLogin() {
         initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
     }
 
@@ -38,11 +43,12 @@ public class JFLogin extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnLogin = new javax.swing.JButton();
         txtRut = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1000, 500));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(73, 181, 172));
@@ -51,14 +57,14 @@ public class JFLogin extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 590, Short.MAX_VALUE)
+            .addGap(0, 550, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 727, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 727));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 727));
 
         jPanel2.setBackground(new java.awt.Color(20, 48, 101));
 
@@ -74,12 +80,12 @@ public class JFLogin extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Ingresa tu Contraseña");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton1.setText("Ingresar");
-        jButton1.setFocusPainted(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnLogin.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        btnLogin.setText("Ingresar");
+        btnLogin.setFocusPainted(false);
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnLoginActionPerformed(evt);
             }
         });
 
@@ -102,30 +108,27 @@ public class JFLogin extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(150, 150, 150))
-            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(0, 170, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(68, 68, 68)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtPassword)
-                                    .addComponent(txtRut, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(68, 68, 68)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtRut, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(185, 185, 185)
-                        .addComponent(jLabel2)))
-                .addContainerGap(112, Short.MAX_VALUE))
+                        .addGap(107, 107, 107)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(101, 101, 101)
+                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(150, 150, 150))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(95, 95, 95)
+                .addContainerGap(94, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addGap(69, 69, 69)
                 .addComponent(jLabel3)
@@ -135,44 +138,75 @@ public class JFLogin extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addGap(31, 31, 31)
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(116, 116, 116))
+                .addGap(92, 92, 92)
+                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(114, 114, 114))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 0, 560, 730));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 0, 690, 700));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+//        String rut = txtRut.getText();
+//        String pass = this.txtPassword.getText();
+//        if (rut.equals("") && pass.equals("")) {
+//            JOptionPane.showMessageDialog(null, "Faltan datos", "inicio sesion", JOptionPane.ERROR_MESSAGE);
+//        }else{
+//            ControllersUsuario ctUsuario = new ControllersUsuario();
+//            Usuario usuario = new Usuario();
+//            Usuario user = ctUsuario.InicioSesion(rut, pass);
+//            
+//            if (user != null) {
+//                if (user.getTipo_usuario().getDescripcion().equals("ADMINISTRADOR")) {
+//                    JOptionPane.showMessageDialog(null, "Bienvenido " + rut, "Inicio Sesion", JOptionPane.INFORMATION_MESSAGE);
+//                    JFMenu menu = new JFMenu();
+//                    menu.setVisible(true);
+//                    dispose();      
+//                }else if(user.getTipo_usuario().getDescripcion().equals("RRHH")){
+//                    JOptionPane.showMessageDialog(null, "Bienvenido " + rut, "Inicio Sesion", JOptionPane.INFORMATION_MESSAGE);
+//                    JFMenuPersonal menu2 =  new JFMenuPersonal();
+//                    menu2.setVisible(true);
+//                    dispose();
+//                }
+//                
+//            }else{
+//                JOptionPane.showMessageDialog(null, "Usuario o Contrasena Incorrecta", "Inicio de Sesion",JOptionPane.ERROR_MESSAGE);
+//            }
+//        }
+        ControllersUsuario ctUsuario = new ControllersUsuario();
+        Usuario user = new Usuario();
+        
+        Date date = new Date();
+        DateFormat fechaHora = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+        
         String rut = txtRut.getText();
-        String pass = this.txtPassword.getText();
-        if (rut.equals("") && pass.equals("")) {
-            JOptionPane.showMessageDialog(null, "Faltan datos", "inicio sesion", JOptionPane.ERROR_MESSAGE);
-        }else{
-            ControllersUsuario ctUsuario = new ControllersUsuario();
-            Usuario usuario = new Usuario();
-            Usuario user = ctUsuario.InicioSesion(rut, pass);
-            
-            if (user != null) {
-                if (user.getTipo_usuario().getDescripcion().equals("ADMINISTRADOR")) {
-                    JOptionPane.showMessageDialog(null, "Bienvenido " + rut, "Inicio Sesion", JOptionPane.INFORMATION_MESSAGE);
-                    JFMenu menu = new JFMenu();
-                    menu.setVisible(true);
-                    dispose();
-                    
-                }
-                
+        String pass = new String(txtPassword.getPassword());
+        if (!rut.equals("") && !pass.equals("")) {
+            String nuevoPass = Hash.sha1(pass);
+            user.setRut(txtRut.getText());
+            user.setPass(nuevoPass);
+            user.setLas_time(fechaHora.format(date));
+            if (ctUsuario.Login(user)) {
+                JOptionPane.showMessageDialog(null, "Bienvenido " , "Inicio de Sesion",JOptionPane.INFORMATION_MESSAGE);
+                JFMenu menu = new JFMenu(user);
+                menu.setVisible(true);
+                dispose();
             }else{
                 JOptionPane.showMessageDialog(null, "Usuario o Contrasena Incorrecta", "Inicio de Sesion",JOptionPane.ERROR_MESSAGE);
+                Limpiar();
             }
-        }
-        
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+        }else {
+            JOptionPane.showMessageDialog(null, "Debe Ingresar sus Datos", "Inicio de Sesion",JOptionPane.ERROR_MESSAGE);
+        }        
+    }//GEN-LAST:event_btnLoginActionPerformed
 
+    private void Limpiar() {
+        txtRut.setText("");
+        txtPassword.setText("");
+
+    }
     private void txtRutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRutActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRutActionPerformed
@@ -217,7 +251,7 @@ public class JFLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
