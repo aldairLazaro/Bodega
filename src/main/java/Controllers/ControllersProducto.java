@@ -22,6 +22,11 @@ public class ControllersProducto {
         return dao.RegistrarProductoBase(pro);
     }
     
+    public boolean UpdateProductosbase(Productos pro){
+        DaoProductos dao = new DaoProductos();
+        return dao.UpdateProductosBase(pro);
+    }
+    
     public List<Productos> ListarProductosBase(){
         DaoProductos dao = new DaoProductos();
         return dao.ListarProductosBase();

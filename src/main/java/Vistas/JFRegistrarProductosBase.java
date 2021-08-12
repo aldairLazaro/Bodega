@@ -120,6 +120,29 @@ public class JFRegistrarProductosBase extends javax.swing.JFrame {
         return exito;
     }
     
+    public Boolean UpdateProductosBase(){
+        Boolean exito = false;
+        try {
+            int codigo = Integer.parseInt(txtCodigo.getText());
+            String descripcion = txtDescripcion.getText();
+            int cantidad = Integer.parseInt(txtCantidad.getText());
+            
+            ControllersProducto ctProductos = new ControllersProducto();
+            Productos productos = new Productos();
+            
+            productos.setCodigo(codigo);
+            productos.setDescripcion(descripcion);
+            productos.setCantidad(cantidad);
+            
+            exito = ctProductos.UpdateProductosbase(productos);
+        } catch (Exception e) {
+            System.out.println(e);
+            exito = false;
+        }
+        
+        return exito;
+    }
+    
     public void LimpiarCasillas(){
         txtCodigo.setText("");
         txtDescripcion.setText("");
@@ -144,6 +167,7 @@ public class JFRegistrarProductosBase extends javax.swing.JFrame {
         txtDescripcion = new javax.swing.JTextField();
         txtCantidad = new javax.swing.JTextField();
         btnRegistrarProductosBase = new javax.swing.JButton();
+        btnEditarProductoBase = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         txtBuscadorProductosbase = new javax.swing.JTextField();
@@ -189,10 +213,18 @@ public class JFRegistrarProductosBase extends javax.swing.JFrame {
         });
 
         btnRegistrarProductosBase.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        btnRegistrarProductosBase.setText("Ingresar Productos");
+        btnRegistrarProductosBase.setText("Ingresar Producto");
         btnRegistrarProductosBase.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarProductosBaseActionPerformed(evt);
+            }
+        });
+
+        btnEditarProductoBase.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        btnEditarProductoBase.setText("Editar Producto");
+        btnEditarProductoBase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarProductoBaseActionPerformed(evt);
             }
         });
 
@@ -203,9 +235,6 @@ public class JFRegistrarProductosBase extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(132, 132, 132)
-                        .addComponent(btnRegistrarProductosBase))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -215,7 +244,12 @@ public class JFRegistrarProductosBase extends javax.swing.JFrame {
                                 .addComponent(jLabel2)
                                 .addComponent(txtCodigo)
                                 .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-                                .addComponent(txtDescripcion)))))
+                                .addComponent(txtDescripcion))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnRegistrarProductosBase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEditarProductoBase, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -237,7 +271,9 @@ public class JFRegistrarProductosBase extends javax.swing.JFrame {
                 .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(btnRegistrarProductosBase, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addComponent(btnEditarProductoBase, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 640));
@@ -266,6 +302,11 @@ public class JFRegistrarProductosBase extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tbProductosBase.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbProductosBaseMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tbProductosBase);
@@ -398,6 +439,29 @@ public class JFRegistrarProductosBase extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnRegistrarProductosBaseActionPerformed
 
+    private void tbProductosBaseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProductosBaseMouseClicked
+        
+        String codigo = tbProductosBase.getValueAt(tbProductosBase.getSelectedRow(), 0).toString();
+        String desripcion = tbProductosBase.getValueAt(tbProductosBase.getSelectedRow(), 1).toString();
+        String cantidad = tbProductosBase.getValueAt(tbProductosBase.getSelectedRow(), 2).toString();
+        
+        txtCodigo.setText(codigo);
+        txtDescripcion.setText(desripcion);
+        txtCantidad.setText(cantidad);
+    }//GEN-LAST:event_tbProductosBaseMouseClicked
+
+    private void btnEditarProductoBaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProductoBaseActionPerformed
+        if (UpdateProductosBase()== true) {
+            JOptionPane.showMessageDialog(null, "Actualizacion Exitosa", "Actualizacion", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showMessageDialog(null, "Actualizacion Fallida", "Actualizacion", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        ListarProductosBase();
+        
+        LimpiarCasillas();
+    }//GEN-LAST:event_btnEditarProductoBaseActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -434,6 +498,7 @@ public class JFRegistrarProductosBase extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEditarProductoBase;
     private javax.swing.JButton btnRegistrarProductosBase;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

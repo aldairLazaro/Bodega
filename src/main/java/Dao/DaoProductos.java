@@ -12,6 +12,7 @@ import Models.SalidaProducto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,33 @@ public class DaoProductos extends Conexion{
                 System.out.println(e);
             }
         }
+    }
+    
+    public Boolean UpdateProductosBase(Productos pro){
+        Boolean exito = false;
+        
+        try {
+            Connection con = getConexion();
+            
+            String sql = "update productos set  descripcion=?, cantidad=? where codigo = ?";
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            
+            
+            ps.setString(1, pro.getDescripcion());
+            ps.setInt(2, pro.getCantidad());
+            ps.setInt(3, pro.getCodigo());
+            
+            int status= 0;
+            status = ps.executeUpdate();
+            
+            if (status == 1) {
+                exito = true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return exito;
     }
     
     public List<Productos>ListarProductosBase(){
